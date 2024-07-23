@@ -2,10 +2,10 @@
 
 https://mgausseran.github.io/restaurant-css-framework/
 
-- Projet réalisé seul en juin 2024 au cours de ma formation [WebDev à BeCode](https://becode.org/)..
-- Objectif : apprendre et mettre en pratique les rudiments de Bootstrap.
-- Site d'un restaurant fictif, comprenant 5 pages "types". (Accueil, Menu, Galerie, About, Contact)
-- Travail terminé, mais mériterait d'être amélioré et optimisé.
+- Suite d'un projet réalisé seul en juin 2024 au cours de ma formation [WebDev à BeCode](https://becode.org/)..
+- Objectif : mettre en place des fonctionnalités backend à notre site "vitrine".
+- Ajout d'un back-office permettant la réception de messages envoyés par des clients du restaurant.
+- :hammer: En cours ! :hammer:
 
 
 
