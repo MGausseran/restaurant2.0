@@ -11,15 +11,14 @@
             $servername = 'localhost';
             $username = 'root';
             $password = '';
+            $dbname = 'restaurant2.0';
             
             //On établit la connexion
-            $conn = new mysqli($servername, $username, $password);
-            
-            //On vérifie la connexion
-            if($conn->connect_error){
-                die('Erreur : ' .$conn->connect_error);
+            $conn = new PDO("mysql:host=$servername;$dbname", $username);
+            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            if ($conn = true) {
+                echo"Connexion réussie";
             }
-            echo 'Connexion réussie';
         ?>
     </body>
 </html>
