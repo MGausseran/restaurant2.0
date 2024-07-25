@@ -61,32 +61,55 @@
             <div class="container">
                 <div class="row col-12">
                     <div class="intro d-flex justify-content-center mt-3 mb-2">
-                        <h2>Nous contacter</h2>
+                        <h2>Messages reçus</h2>
                     </div>
                 </div>
                 <div class="row col-12">
-                    <?php
-                    try {
-                        include("check_connection.php");
+                    <table class="table table-bordered">
+                        <thead>
+                            <th>Nom et prénom</th>
+                            <th>Email</th>
+                            <th>Motif</th>
+                            <th>Message</th>
+                        </thead>
 
-                        // Vérifiez si $conn est un objet PDO valide
-                        if (!$conn) {
-                            throw new Exception("La connexion à la base de données a échoué.");
-                        }
+                        <tbody>
 
-                        $query = "SELECT * FROM submissions";
-                        $statement = $conn->prepare($query);
-                        $statement->execute();
-                        $result = $statement->fetchAll();
-                            foreach ($result as $row) {
-                                echo "<table><tr><td>" . $row["id"] . "</td><td>" . $row["name"] . "</td><td>" . $row["email"] . "</td><td>" . $row["motif"] . "</td><td>" . $row["message"] . "</td></tr>";
+                            <?php
+                            try {
+                                include("check_connection.php");
+
+                                // Vérifiez si $conn est un objet PDO valide
+                                if (!$conn) {
+                                    throw new Exception("La connexion à la base de données a échoué.");
+                                }
+
+                                $query = "SELECT * FROM submissions";
+                                $statement = $conn->prepare($query);
+                                $statement->execute();
+                                $result = $statement->fetchAll();
+                                foreach ($result as $row) {
+                            ?>
+                                    <tr>
+                                        <td><?= $row['name']; ?></td>
+                                        <td><?= $row['email']; ?></td>
+                                        <td><?= $row['motif']; ?></td>
+                                        <td><?= $row['message']; ?></td>
+                                        <td>
+                                <form method="post">
+                                    <button type="submit" name="deletebtn" value="<?=$row['id']?>" class="btn btn-danger">Supprimer</button>
+                                </form>
+                            </td>
+                                    </tr>
+                            <?php
+                                }
+                            } catch (PDOException $e) {
+                                echo 'Impossible de traiter les données. Erreur : ' . $e->getMessage();
                             }
-                            echo "</table>";
-                        }
-                    catch (PDOException $e) {
-                        echo 'Impossible de traiter les données. Erreur : ' . $e->getMessage();
-                    }
-                        ?>
+                            ?>
+
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </section>
