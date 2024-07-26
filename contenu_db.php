@@ -96,18 +96,54 @@
                                         <td><?= $row['motif']; ?></td>
                                         <td><?= $row['message']; ?></td>
                                         <td>
-                                <form method="post">
-                                    <button type="submit" name="deletebtn" value="<?=$row['id']?>" class="btn btn-danger">Supprimer</button>
-                                </form>
-                            </td>
+                                            <form method="post">
+                                                <button type="submit" name="deletebtn" value="<?= $row['id'] ?>" class="btn btn-danger">Supprimer</button>
+
+                                            </form>
+                                        </td>
                                     </tr>
+
                             <?php
+                                }
+                                $sheety_url = "https://api.sheety.co/6858d754b55bad27519474c3b67e8871/restaurant20/sheet1";
+
+                                // Envoi des données à Sheety
+                                foreach ($result as $entry) {
+                                    // On crée un tableau associatif pour toutes les colonnes
+                                    $json_data = json_encode(array(
+                                        "sheet1" => array(
+                                            "name" => $entry['name'],
+                                            "email" => $entry['email'],
+                                            "motif" => $entry['motif'],
+                                            "message" => $entry['message']
+                                        )
+                                    ));
+
+                                    $ch = curl_init($sheety_url);
+                                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                                    curl_setopt($ch, CURLOPT_POST, true);
+                                    curl_setopt($ch, CURLOPT_POSTFIELDS, $json_data);
+                                    curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+
+                                    $response = curl_exec($ch);
+                                    $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+                                    curl_close($ch);
                                 }
                             } catch (PDOException $e) {
                                 echo 'Impossible de traiter les données. Erreur : ' . $e->getMessage();
                             }
                             ?>
+                            <?php if (isset($_POST['deletebtn'])) {
+                                $id = $_POST['deletebtn'];
 
+
+                                $query = "DELETE FROM submissions WHERE id = :id";
+                                $statement = $conn->prepare($query);
+                                $statement->bindParam(':id', $id, PDO::PARAM_INT);
+                                $statement->execute();
+                            }
+                            ?>
                         </tbody>
                     </table>
                 </div>
